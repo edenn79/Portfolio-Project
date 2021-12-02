@@ -25,12 +25,21 @@ From PortfolioProject..CovidDeaths$
 Where location like '%states%'
 order by 1,2
 
--- Looking at countries with highest infection rates compared to population
-
+--For Tableau
 Select Location, population, MAX(total_cases) as HighestInfectionCount, Max((total_cases/population))*100 as PercentPopulationInfected
 From PortfolioProject..CovidDeaths$
---Where location like '%states%'
+Where location not in ('Upper middle income', 'High income', 'Lower middle income', 'Low income')
 Group by Location, population
+order by 1,2
+
+
+-- Looking at countries with highest infection rates compared to population
+
+Select Location, population, date, MAX(total_cases) as HighestInfectionCount, Max((total_cases/population))*100 as PercentPopulationInfected
+From PortfolioProject..CovidDeaths$
+--Where location like '%states%'
+Where location not in ('Upper middle income', 'High income', 'Lower middle income', 'Low income')
+Group by Location, population, date
 order by PercentPopulationInfected desc
 
 -- Showing countries with highest death count per population
@@ -70,6 +79,13 @@ From PortfolioProject..CovidDeaths$
 Where continent is not null
 Group by date
 order by 1,2
+
+Select location, SUM(cast(new_deaths as int)) as TotalDeathCount
+From PortfolioProject..CovidDeaths$
+Where continent is null
+and location not in ('world', 'European Union', 'International', 'Upper middle income', 'High income', 'Lower middle income', 'Low income')
+Group by location
+order by TotalDeathCount desc
 
 -- Total across World
 
